@@ -12,15 +12,14 @@
 5. If project JSON doesn't exist:
 	a) Run PDF annotate on each and add 
 '''
-# Connect to Zotero
+
+import sys
 import sqlite3
-import pandas as pd
 import json
 import os
-import sys
-import pdfkit
 import shutil
-# from weasyprint import html
+import pandas as pd
+import pdfkit
 
 import get_annots
 import notes_app

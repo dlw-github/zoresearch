@@ -13,9 +13,9 @@ Dictionary with PDF metadata and annotations
 '''
 
 # IMPORTS
-import fitz
 import sys
 import os
+import fitz
 
 
 def _check_contain(rect_annot, rect_reference, threshold=0.75):
