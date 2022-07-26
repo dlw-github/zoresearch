@@ -15,7 +15,7 @@ class Note_gui:
 		self.root.title("Research Reader: " + collection_name.title() + " Collection") 
 		self.root.geometry("1200x450")
 		self.root.config(bg='#E5E5E5')
-		self.root.iconbitmap(r"C:\Users\dlwal\Dropbox\research_projects\Scripts\research_reader.ico")
+		self.root.iconbitmap(r"C:\Users\dlwal\Dropbox\researcher\icons\researcher.ico")
 
 		# Initialize metadata
 		self.app_data_location = app_data_location

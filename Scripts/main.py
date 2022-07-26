@@ -5,8 +5,6 @@ from tendo import singleton
 
 # Import internal modules
 import sources_db
-import get_annots
-import notes_app
 import gui
 
 
