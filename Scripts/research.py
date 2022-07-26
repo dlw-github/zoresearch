@@ -100,6 +100,8 @@ def _create_project(sources, collection_name):
 		# For each source with an attachment, get annots from attachment
 		if source['file_loc'] != None:
 			source = _find_attachments(source)
+		else:
+			print('\tNo file found')
 		if source['file_loc'] != None:
 			source = get_annots._main(source)
 		print('\n')
@@ -130,7 +132,7 @@ def _get_sources(collection_name):
 	df_1 = pd.read_sql_query('''
 				SELECT  
 					itemData.itemID,
-					items.key,
+					items.key, 
 					max(itemDataValues.value) filter(where itemData.fieldID = 1) title,
 					max(itemDataValues.value) filter(where itemData.fieldID = 8) short_title,
 					max(itemDataValues.value) filter(where itemData.fieldID = 13) url
@@ -144,7 +146,7 @@ def _get_sources(collection_name):
 				INNER JOIN collections ON 
 					collections.collectionID = collectionItems.collectionID
 				WHERE 
-					collectionName = ?
+					lower(collectionName) = ?
 					AND (
 						itemData.fieldID = 8 
 						OR itemData.fieldID = 13 
@@ -178,7 +180,7 @@ def _get_sources(collection_name):
 			ON 
 				collections.collectionID = collectionItems.collectionID
 			WHERE 
-				collectionName = ?
+				lower(collectionName) = ?
 			''',
 		con,
 		params=[collection_name]
@@ -201,7 +203,7 @@ def _get_sources(collection_name):
 	df_2 = df_2.astype(str)
 
 	df_merge = pd.merge(df_1, df_2, how='left', left_on=df_1['itemID'], right_on=df_2['parentItemID'])
-	df_merge['file_loc'] = 'C:\\Users\\dlwal\\Zotero\\storage\\' + df_merge['attachkey'] + '\\' + df_merge['path']
+	df_merge['file_loc'] = 'C:\\Users\\dlwal\\Zotero\\storage\\' + df_merge['attachkey'] + '\\' + df_merge['6']
 	df_merge = df_merge[['key', 'title',  'short_title', 'url', 'file_loc']]
 	df_merge = df_merge.where(pd.notnull(df_merge), None)
 	df_merge.sort_values(by=['title'], inplace=True)
@@ -219,9 +221,23 @@ def _get_sources(collection_name):
 	return sources
 
 
+def update_data(notes_data, dummy):
+    # global notes_data # needed to modify the global value
+    # global dummy
+    
+    # get a local copy (simulate data retrieving)
+    # local_copy = database_value
+    # simulate some modifying operation
+    time.sleep(5)
+    notes_data.append('Added element')
+    dummy = True
+
+
+
 def _main(collection_name):	
 	
 	# Get list of Zotero sources in collection
+	collection_name = collection_name.lower()
 	sources = _get_sources(collection_name)
 
 	# Check if project file exists

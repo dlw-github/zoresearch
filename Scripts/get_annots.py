@@ -6,7 +6,14 @@ DESCRIPTION:
 Creates/updates a dictionary a PDF's annotations for use in Notes app.
 
 INPUTS:
-PDF file location, meta data
+PDF file location, meta data. Change to source class object.
+    - metadata
+    - annotations
+    - dummy vars (read)
+    - functions
+        - find_annots
+        - update_annots
+        - xxx
 
 OUTPUTS:
 Dictionary with PDF metadata and annotations
@@ -69,6 +76,9 @@ def _create_annot(annot, source):
     elif(annot.type[0] == 8):
         annot_text_raw = _get_highlight_text(annot)
 
+    else:
+        annot_text_raw = 'None'
+
     # Create annot entry
     annot_text = ('PAGE '
                   + str(annot.parent.number + 1)
@@ -87,17 +97,20 @@ def _create_annot(annot, source):
     if annot_entry not in source['annots']:
         source['annots'].append(annot_entry)
         source['all_notes'] += '\n\n' + annot_text 
-        print('\t\tAnnot added to dictionary')
+        print('\t\t\tAnnot added to dictionary')
     else:
-        print('\t\tAnnot already in dictionary')
+        print('\t\t\tAnnot already in dictionary')
 
 
 def _main(source):
-    '''Main function'''
+    attachment = source['attachment']
+
+    if attachment == None:
+        return source
     try:
-        file_path = os.path.normpath(source['file_loc'])
+        file_path = os.path.normpath(attachment)
         doc = fitz.open(file_path)
-        print('\tExtracting annotations')
+        print('\t\tExtracting annotations')
 
         for page in doc.pages():
             for annot in page.annots():
@@ -105,8 +118,8 @@ def _main(source):
         return source
    
     except RuntimeError:
-        print('\tNo PDF available')
-        source['file_loc'] = None 
+        print('\t\tUnable to extract annotations')
+        attachment = None 
         return source
 
 if __name__ == '__main__':
