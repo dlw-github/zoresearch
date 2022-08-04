@@ -32,12 +32,12 @@ zoresearcher.open(zotero_folder_location, zotero_collection_name=all)
 
 ---
 ### Interface
-![Interface](/examples/researcher_interface.png "Interface")
+![Interface](/screenshots/interface.png "Interface")
 ---
 ### Source annotations
-![Annotations](https://github.com/dlw-github/zotero_research_manager/blob/main/examples/annotated_source.png "Annotations")
+![Annotations](/screenshots/annotated_source.png "Annotations")
 ---
 ### Adding notes
-![Notes](https://github.com/dlw-github/zotero_research_manager/blob/main/examples/adding_notes.png "Notes")
+![Notes](/screenshots/adding_notes.png "Notes")
 ### Starring a source
-![Starred](https://github.com/dlw-github/zotero_research_manager/blob/main/examples/starred_sources.png "Starred")
+![Starred](/screenshots/starred_sources.png "Starred")
