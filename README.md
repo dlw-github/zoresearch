@@ -37,15 +37,19 @@ Zotero sources are displayed on a scrollable sidebar. The main window displays t
 Use dropdown menus to select different Zotero collections and to filter sources by either 'Starred' or 'Unread'.
 
 Click 'Show PDF' for thumbnails.
+
 ![Interface](/screenshots/interface.png "Interface")
 ---
 ### Source annotations
 Highlighting and adding comments to PDFs are convenient ways to take notes. But extracting them can be a pain! zoResearcher extracts all these annotations for easy access. 
+
 ![Annotations](/screenshots/annotated_source.png "Annotations")
 ---
 ### Adding notes
 In addition to PDF annotations, users can add additional notes directly to the viewer. zoResearcher automatically saves these notes.
+
 ![Notes](/screenshots/adding_notes.png "Notes")
 ### Starring a source
 Want to designate some important sources? Simply 'Star' the source so that you can easily find them using the dropdown menu.
+
 ![Starred](/screenshots/starred_sources.png "Starred")
