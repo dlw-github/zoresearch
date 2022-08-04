@@ -32,7 +32,7 @@ zoresearcher.open(zotero_folder_location, zotero_collection_name=all)
 
 ---
 ### Interface
-![Interface](https://github.com/dlw-github/zoresearcher/blob/main/examples/researcher_interface.png "Interface")
+![Interface](/examples/researcher_interface.png "Interface")
 ---
 ### Source annotations
 ![Annotations](https://github.com/dlw-github/zotero_research_manager/blob/main/examples/annotated_source.png "Annotations")
