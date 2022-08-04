@@ -1,21 +1,25 @@
 from tkinter import *
 from tkinter import Tk, font
-import sources_db
+import tkinter as tk
 import webbrowser
 import fitz
 import json
 import time
+import os
+
+import zoresearcher.sources_db
 
 
 class Note_gui:
 	def __init__(self, app_data, collection_name, app_data_location):
 		
 		# Create Tkinter window
-		self.root = Tk()
+		self.root = tk.Tk()
 		self.root.title("Research Reader: " + collection_name.title() + " Collection") 
 		self.root.geometry("1200x450")
 		self.root.config(bg='#E5E5E5')
-		self.root.iconbitmap(r"C:\Users\dlwal\Dropbox\researcher\icons\researcher.ico")
+		self.root.iconbitmap(r"C:\Users\dlwal\Dropbox\zoresearcher\icons\researcher.ico")
+		print('CURRENT DIR:' + os.getcwd())
 
 		# Initialize metadata
 		self.app_data_location = app_data_location
@@ -224,7 +228,7 @@ class Note_gui:
 			source.grid_forget()
 
 		# Grid new source labels
-		self.selected_collection = sources_db._select_collection(self.app_data, self.collection_name, source_type)
+		self.selected_collection = zoresearcher.sources_db._select_collection(self.app_data, self.collection_name, source_type)
 
 		for i, source in enumerate(self.selected_collection):
 			print(f'[{i+1}/{len(self.selected_collection)}] {source.title}')

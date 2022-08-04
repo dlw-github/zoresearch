@@ -7,7 +7,7 @@ import pandas as pd
 import pdfkit
 import numpy as np
 
-from Source import Source
+from zoresearcher import source as create_source
 
 
 def _sql_query(zotero_location):
@@ -81,7 +81,7 @@ def _lower(collections):
 	return new_list
 
 
-def _process_data(zotero_data_raw):
+def _process_data(zotero_data_raw, zotero_folder):
 	df_1 = zotero_data_raw[0]
 	df_2 = zotero_data_raw[1]
 
@@ -117,7 +117,7 @@ def _process_data(zotero_data_raw):
 
 	# Merge datasets
 	df_merge = pd.merge(df_1, df_2, how='left', left_on=df_1['itemID'], right_on=df_2['parentItemID'])
-	df_merge['attachment'] = 'C:\\Users\\dlwal\\Zotero\\storage\\' + df_merge['attachkey'] + '\\'
+	df_merge['attachment'] = zotero_folder + '\\storage\\' + df_merge['attachkey'] + '\\'
 	df_merge = df_merge[['key', 'title',  'short_title', 'url', 'attachment', 'collectionName', 'clientDateModified']]
 	df_merge = df_merge.rename(columns={"clientDateModified": "date_added"})
 	df_merge = df_merge.drop_duplicates()
@@ -141,7 +141,7 @@ def _update_data(app_json_location, zotero_data):
 	# If no app data exists, just use Zotero data
 	if not os.path.exists(app_json_location):
 		print('No dataset exists. Creating from Zotero data')
-		app_data = [Source(source) for source in zotero_data]
+		app_data = [create_source.Source(entry) for entry in zotero_data]
 
 		return app_data
 
@@ -170,10 +170,10 @@ def _update_data(app_json_location, zotero_data):
 				break
 
 	# Create Source object for each source
-	app_data = [Source(source) for source in app_data]
+	app_data = [create_source.Source(entry) for entry in app_data]
 
 	for i, source in enumerate(app_data):
-		print(f'[{i+1}/{len(app_data)}] {source.title}')
+		# print(f'[{i+1}/{len(app_data)}] {source.title}')
 		# source = Source(source)
 		source._get_attachment()
 		source._get_annots()

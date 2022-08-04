@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zoresearcher"
+version = "0.0.1"
+authors = [
+  { name="Daniel Waldroop", email="dlwaldroop@gmail.com" },
+]
+description = "Interactive research application built on top of Zotero citation manager"
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/dlw-github/zoresearcher"

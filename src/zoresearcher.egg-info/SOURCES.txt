@@ -1,0 +1,15 @@
+LICENSE
+README.md
+pyproject.toml
+src/start.py
+src/zoresearcher/__init__.py
+src/zoresearcher/get_annots.py
+src/zoresearcher/gui.py
+src/zoresearcher/main.py
+src/zoresearcher/source.py
+src/zoresearcher/sources_db.py
+src/zoresearcher/test.py
+src/zoresearcher.egg-info/PKG-INFO
+src/zoresearcher.egg-info/SOURCES.txt
+src/zoresearcher.egg-info/dependency_links.txt
+src/zoresearcher.egg-info/top_level.txt

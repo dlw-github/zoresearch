@@ -3,9 +3,9 @@ import sys
 import os
 import pdfkit
 import fitz
-from tkinter import *
+import tkinter as tk
 
-import gui
+import zoresearcher.gui
 
 class Source:
 	def __init__(self, metadata):
@@ -48,7 +48,7 @@ class Source:
 		if len(text) > 80:
 			text = text[ :80] + '...'
 
-		self.label = Label(
+		self.label = tk.Label(
 						frame, 
 						text=text,
 						width=30,
@@ -63,12 +63,12 @@ class Source:
 		if self.read == False:
 			self.label.config(font=('open sans', 10, 'bold'))
 
-		self.label.bind('<Enter>', gui._hover)
-		self.label.bind('<Leave>', gui._leave)
+		self.label.bind('<Enter>', zoresearcher.gui._hover)
+		self.label.bind('<Leave>', zoresearcher.gui._leave)
 		
 
 	def _html_to_pdf(self, html):
-		print('\t\tConverting HTML file to PDF: {}'.format(html))
+		# print('\t\tConverting HTML file to PDF: {}'.format(html))
 		html = self.attachment + html
 		pdf_path = html[ : -4] + 'pdf'
 		try:
@@ -81,31 +81,32 @@ class Source:
 			)
 		
 		except OSError:
-			print('\t\t\tWKHTML is complaining')
+			# print('\t\t\tWKHTML is complaining')
+			pass
 		
 		self.attachment = pdf_path
 		return
 
 
 	def _get_attachment(self):
-		print('\t\tInitial attachment value: {}'.format(self.attachment))
+		# print('\t\tInitial attachment value: {}'.format(self.attachment))
 
 		# Return if PDF is already located or if no attachment exists
 		if self.attachment is None:
 			return
 
 		if self.attachment.endswith('.pdf'):
-			print('\t\tPDF already exists or no attachment: {}'.format(self.attachment))
+			# print('\t\tPDF already exists or no attachment: {}'.format(self.attachment))
 			return
 
 		# Otherwise, attachment points to directory. Convert HTML to PDF if needed
 		else:
-			print('\t\t\tSearching for file in folder {}'.format(self.attachment))
+			# print('\t\t\tSearching for file in folder {}'.format(self.attachment))
 			try:
 				directory = os.listdir(self.attachment)
 				pdf = [match for match in directory if '.pdf' in match]
 				if pdf:
-					print('\t\tPDF found in source folder: {}'.format(pdf[0]))
+					# print('\t\tPDF found in source folder: {}'.format(pdf[0]))
 					self.attachment = self.attachment + pdf[0]
 					return
 
@@ -115,7 +116,7 @@ class Source:
 						self.attachment = self._html_to_pdf(html[0])
 						return
 					else:
-						print('\t\tNo attachment found in folder; return none')
+						# print('\t\tNo attachment found in folder; return none')
 						self.attachment = None
 						return
 			
@@ -196,9 +197,10 @@ class Source:
 	    if annot_entry not in self.annots:
 	        self.annots.append(annot_entry)
 	        self.all_notes += '\n\n' + annot_text 
-	        print('\t\t\tAnnot added to dictionary')
+	        # print('\t\t\tAnnot added to dictionary')
 	    else:
-	        print('\t\t\tAnnot already in dictionary')
+	        # print('\t\t\tAnnot already in dictionary')
+	        pass
 
 
 
@@ -209,7 +211,7 @@ class Source:
 	    try:
 	        file_path = os.path.normpath(self.attachment)
 	        doc = fitz.open(file_path)
-	        print('\t\tExtracting annotations')
+	        # print('\t\tExtracting annotations')
 
 	        for page in doc.pages():
 	            for annot in page.annots():
@@ -217,6 +219,6 @@ class Source:
 	        return
 	   
 	    except RuntimeError:
-	        print('\t\tUnable to extract annotations')
+	        # print('\t\tUnable to extract annotations')
 	        self.attachment = None 
 	        return
