@@ -55,7 +55,7 @@ class Source:
 						font=('open sans',10),
                         wraplength=200, 
                         bg='#E5E5E5', 
-                        justify=LEFT,
+                        justify=tk.LEFT,
                         anchor='w',
                         pady=10,
                         cursor='hand2'

@@ -1,4 +1,4 @@
-from tkinter import *
+# from tkinter import *
 from tkinter import Tk, font
 import tkinter as tk
 import webbrowser
@@ -6,6 +6,8 @@ import fitz
 import json
 import time
 import os
+from importlib import resources
+
 
 import zoresearcher.sources_db
 
@@ -18,7 +20,8 @@ class Note_gui:
 		self.root.title("Research Reader: " + collection_name.title() + " Collection") 
 		self.root.geometry("1200x450")
 		self.root.config(bg='#E5E5E5')
-		self.root.iconbitmap(r"C:\Users\dlwal\Dropbox\zoresearcher\icons\researcher.ico")
+		icon_path = self.get_icon()
+		self.root.iconbitmap(icon_path)
 		print('CURRENT DIR:' + os.getcwd())
 
 		# Initialize metadata
@@ -29,12 +32,12 @@ class Note_gui:
 
 		# Initialize collection dropdown
 		self.collection_names = sorted(set(collection.title() for source in self.app_data for collection in source.collections))
-		self.dropdown_selection = StringVar()
+		self.dropdown_selection = tk.StringVar()
 		self.dropdown_selection.set(self.collection_name.title())
 
 		# Initialize source type dropdown
 		self.source_types = ['All', 'Starred', 'Unread']
-		self.source_type_dropdown_selection = StringVar()
+		self.source_type_dropdown_selection = tk.StringVar()
 		self.source_type_dropdown_selection.set('All')
 
 		# Create main display and widgets
@@ -63,6 +66,12 @@ class Note_gui:
 		self.root.mainloop()
 
 
+	def get_icon(self):
+		with resources.path("zoresearcher.icon", "zoresearcher.ico") as f:
+			data_file_path = f
+		return data_file_path
+
+
 	def _on_closing(self):
 		print('Clicked close')
 		self._save_source()
@@ -71,7 +80,7 @@ class Note_gui:
 
 
 	def _save_source(self):
-		self.selected_source.all_notes = self.text_widget.get("1.0",END)
+		self.selected_source.all_notes = self.text_widget.get("1.0",tk.END)
 
 
 	def _save_data(self):
@@ -143,7 +152,7 @@ class Note_gui:
 
 		self.root.title("Research Reader: " + self.collection_name.title() + " Collection") 
 		self._save_source()
-		self.text_widget.delete('1.0', END)
+		self.text_widget.delete('1.0', tk.END)
 
 		# Display queried collection
 		self._display_collection()
@@ -157,7 +166,7 @@ class Note_gui:
 		source_type = self.source_type_dropdown_selection.get().lower()
 		print(source_type)
 		self._save_source()
-		self.text_widget.delete('1.0', END)
+		self.text_widget.delete('1.0', tk.END)
 
 		
 		self._display_collection(source_type)
@@ -168,26 +177,26 @@ class Note_gui:
 	def _main_display(self):
 
 		# Create widgets
-		self.canvas = Canvas(self.root, background="#E5E5E5", width=220) 
-		self.frame = Frame(self.canvas, background='#E5E5E5')
-		self.text_widget = Text(self.root, bg='#F9F9F9', font=('open sans', 10), relief='flat')
-		self.collections_dropdown = OptionMenu(self.root, self.dropdown_selection, *self.collection_names, command = lambda _: self._select_collection())
+		self.canvas = tk.Canvas(self.root, background="#E5E5E5", width=220) 
+		self.frame = tk.Frame(self.canvas, background='#E5E5E5')
+		self.text_widget = tk.Text(self.root, bg='#F9F9F9', font=('open sans', 10), relief='flat')
+		self.collections_dropdown = tk.OptionMenu(self.root, self.dropdown_selection, *self.collection_names, command = lambda _: self._select_collection())
 
-		self.source_label = Label(self.root, text='Sources', font=('open sans', 10), bg='#E5E5E5', padx=0)
-		self.title_label = Label(self.root, text='Title', font=('open sans', 10), bg='#E5E5E5', wraplength=700) 
-		self.url_label = Label(self.root, text='URL', font=('open sans', 10, 'italic'), fg='blue', bg='#E5E5E5', cursor='hand2',  wraplength=700)
-		self.read_label = Label(self.root, text='', font=('open sans', 10), bg='#E5E5E5', wraplength=50) 
-		self.pdf_label = Label(self.root, text='Show PDF', font=('open sans', 10), bg='#E5E5E5', wraplength=50)
+		self.source_label = tk.Label(self.root, text='Sources', font=('open sans', 10), bg='#E5E5E5', padx=0)
+		self.title_label = tk.Label(self.root, text='Title', font=('open sans', 10), bg='#E5E5E5', wraplength=700) 
+		self.url_label = tk.Label(self.root, text='URL', font=('open sans', 10, 'italic'), fg='blue', bg='#E5E5E5', cursor='hand2',  wraplength=700)
+		self.read_label = tk.Label(self.root, text='', font=('open sans', 10), bg='#E5E5E5', wraplength=50) 
+		self.pdf_label = tk.Label(self.root, text='Show PDF', font=('open sans', 10), bg='#E5E5E5', wraplength=50)
 
-		self.text_scroll = Scrollbar(self.root, orient='vertical', command=self.text_widget.yview)
-		self.source_scroll = Scrollbar(self.root, orient="vertical", command=self.canvas.yview)
+		self.text_scroll = tk.Scrollbar(self.root, orient='vertical', command=self.text_widget.yview)
+		self.source_scroll = tk.Scrollbar(self.root, orient="vertical", command=self.canvas.yview)
 
-		self.pdf_frame = Frame(self.root)
-		self.pdf_scroll = Scrollbar(self.pdf_frame, orient='vertical')
-		self.pdf_text = Text(self.pdf_frame, yscrollcommand=self.pdf_scroll.set, width=90, bg='#F9F9F9', font=('open sans', 10), relief='flat')
+		self.pdf_frame = tk.Frame(self.root)
+		self.pdf_scroll = tk.Scrollbar(self.pdf_frame, orient='vertical')
+		self.pdf_text = tk.Text(self.pdf_frame, yscrollcommand=self.pdf_scroll.set, width=90, bg='#F9F9F9', font=('open sans', 10), relief='flat')
 
-		self.star_label = Label(self.root, text = u'\u2606', font=('open sans', 10), bg='#E5E5E5', padx=0)
-		self.source_type_label = OptionMenu(self.root, self.source_type_dropdown_selection, *self.source_types, command = lambda _: self._select_source_type())
+		self.star_label = tk.Label(self.root, text = u'\u2606', font=('open sans', 10), bg='#E5E5E5', padx=0)
+		self.source_type_label = tk.OptionMenu(self.root, self.source_type_dropdown_selection, *self.source_types, command = lambda _: self._select_source_type())
 
 		# Configure widgets
 		self.canvas.create_window((0,0), window=self.frame, anchor="nw")
@@ -241,7 +250,7 @@ class Note_gui:
 	def _display_source(self, source):
 
 		# Save data from previously selected source
-		if self.text_widget.get("1.0",END).strip():
+		if self.text_widget.get("1.0",tk.END).strip():
 			self._save_source()
 		
 		# Reset formatting of source label widgets
@@ -270,7 +279,7 @@ class Note_gui:
 		self.url_label.config(text=source.url)
 		self.url_label.bind("<Button-1>", lambda e: self._open_link(source.url))
 
-		self.text_widget.delete('1.0', END)
+		self.text_widget.delete('1.0', tk.END)
 		self.text_widget.insert('end', source.all_notes.strip())
 		self.text_widget.config(font=('open sans', 10))
 
@@ -292,14 +301,14 @@ class Note_gui:
 		if source.attachment == None:
 			self.title_label.configure(cursor='arrow')
 			self.pdf_text.configure(state="normal")
-			self.pdf_text.delete('1.0', END)
-			self.pdf_text.insert(END, 'PDF unavailable')
+			self.pdf_text.delete('1.0', tk.END)
+			self.pdf_text.insert(tk.END, 'PDF unavailable')
 			self.pdf_text.configure(state="disabled")
 
 		else:
 			self.title_label.configure(cursor='hand2')
 			self.pdf_text.configure(state="normal")
-			self.pdf_text.delete('1.0', END)
+			self.pdf_text.delete('1.0', tk.END)
 
 			open_pdf = fitz.open(source.attachment)
 			
@@ -313,8 +322,8 @@ class Note_gui:
 				self.images.append(timg)
 			
 			for i, img in enumerate(self.images):
-				self.pdf_text.image_create(END, image=img)
-				self.pdf_text.insert(END, '\n\n')
+				self.pdf_text.image_create(tk.END, image=img)
+				self.pdf_text.insert(tk.END, '\n\n')
 
 			self.pdf_text.configure(state="disabled")
 
@@ -362,7 +371,6 @@ def _leave(event):
 
 
 def _main(app_data, collection_name, app_data_location):
-
 
 	# Create GUI object
 	gui = Note_gui(app_data, collection_name, app_data_location)

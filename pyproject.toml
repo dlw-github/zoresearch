@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "zoresearcher"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name="Daniel Waldroop", email="dlwaldroop@gmail.com" },
 ]
@@ -12,6 +12,7 @@ description = "Interactive research application built on top of Zotero citation 
 readme = "README.md"
 license = { file="LICENSE" }
 requires-python = ">=3.7"
+include = ["icon/*", "zoresearcher.ico"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",

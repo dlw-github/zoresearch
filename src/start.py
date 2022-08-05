@@ -1,4 +1,6 @@
 print("START")
 
-import zoresearcher
-zoresearcher.open(r"C:\\Users\\dlwal\\Zotero")
+import zoresearcher.main
+
+
+zoresearcher.main.open("C:\\Users\\dlwal\\Zotero")
