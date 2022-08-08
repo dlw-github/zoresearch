@@ -7,7 +7,7 @@ import pandas as pd
 import pdfkit
 import numpy as np
 
-from zoresearcher import source as create_source
+from zoresearch import source as create_source
 
 
 def _sql_query(zotero_location):

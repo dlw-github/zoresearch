@@ -9,7 +9,7 @@ import os
 from importlib import resources
 
 
-import zoresearcher.sources_db
+import zoresearch.sources_db
 
 
 class Note_gui:
@@ -67,7 +67,7 @@ class Note_gui:
 
 
 	def get_icon(self):
-		with resources.path("zoresearcher.icon", "zoresearcher.ico") as f:
+		with resources.path("zoresearch.icon", "zoresearch.ico") as f:
 			data_file_path = f
 		return data_file_path
 
@@ -237,7 +237,7 @@ class Note_gui:
 			source.grid_forget()
 
 		# Grid new source labels
-		self.selected_collection = zoresearcher.sources_db._select_collection(self.app_data, self.collection_name, source_type)
+		self.selected_collection = zoresearch.sources_db._select_collection(self.app_data, self.collection_name, source_type)
 
 		for i, source in enumerate(self.selected_collection):
 			print(f'[{i+1}/{len(self.selected_collection)}] {source.title}')

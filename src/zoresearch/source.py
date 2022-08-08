@@ -5,7 +5,7 @@ import pdfkit
 import fitz
 import tkinter as tk
 
-import zoresearcher.gui
+import zoresearch.gui
 
 class Source:
 	def __init__(self, metadata):
@@ -63,8 +63,8 @@ class Source:
 		if self.read == False:
 			self.label.config(font=('open sans', 10, 'bold'))
 
-		self.label.bind('<Enter>', zoresearcher.gui._hover)
-		self.label.bind('<Leave>', zoresearcher.gui._leave)
+		self.label.bind('<Enter>', zoresearch.gui._hover)
+		self.label.bind('<Leave>', zoresearch.gui._leave)
 		
 
 	def _html_to_pdf(self, html):
