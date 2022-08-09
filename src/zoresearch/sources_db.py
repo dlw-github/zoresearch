@@ -154,7 +154,7 @@ def _update_data(app_json_location, zotero_data):
 	for source in zotero_data:
 		if source['key'] not in [source['key'] for source in app_data]:
 			app_data.append(source)
-			print(f'Adding {source["title"]}')
+			print(f'Adding {source["title"]}. Key: {source["key"]}')
 
 	# Remove sources deleted from Zotero from app data
 	for source in app_data:
@@ -167,6 +167,9 @@ def _update_data(app_json_location, zotero_data):
 		for zot_source in zotero_data:
 			if app_source['key'] == zot_source['key']:
 				app_source['collections'] = zot_source['collections']
+				if app_source['attachment']==None:
+					# print(f"Changing attachment of {app_source['title']}")
+					app_source['attachment'] = zot_source['attachment']
 				break
 
 	# Create Source object for each source
@@ -174,7 +177,6 @@ def _update_data(app_json_location, zotero_data):
 
 	for i, source in enumerate(app_data):
 		# print(f'[{i+1}/{len(app_data)}] {source.title}')
-		# source = Source(source)
 		source._get_attachment()
 		source._get_annots()
 

@@ -318,7 +318,7 @@ class Note_gui:
 				pix = page.get_pixmap()
 				pix1 = fitz.Pixmap(pix, 0) if pix.alpha else pix
 				img = pix1.tobytes("ppm")
-				timg = PhotoImage(data=img)
+				timg = tk.PhotoImage(data=img)
 				self.images.append(timg)
 			
 			for i, img in enumerate(self.images):

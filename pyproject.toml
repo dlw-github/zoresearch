@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "zoresearch"
-version = "0.0.2"
+version = "0.0.3"
 authors = [
   { name="Daniel Waldroop", email="dlwaldroop@gmail.com" }]
 description = "Interactive research application built on top of Zotero citation manager"

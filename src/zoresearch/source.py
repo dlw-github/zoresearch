@@ -68,24 +68,42 @@ class Source:
 		
 
 	def _html_to_pdf(self, html):
-		# print('\t\tConverting HTML file to PDF: {}'.format(html))
+		print(f'\t\tConverting HTML file to PDF: {html}')
 		html = self.attachment + html
+		# print(html)
 		pdf_path = html[ : -4] + 'pdf'
-		try:
-			self.attachment = pdfkit.from_file(html, pdf_path, verbose=False, options=(
-					{
-					'disable-javascript': True
-					, 'load-error-handling': 'ignore'
-					}
-				)
-			)
+		# print(pdf_path)
 		
+		try:
+			if os.path.exists(r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"):
+				# print('config option')
+				config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe")
+				pdfkit.from_file(html, pdf_path, verbose=False, configuration=config, options=(
+						{
+						'disable-javascript': True
+						, 'load-error-handling': 'skip'
+						}
+					)
+				)
+			else:
+				# print('no config')
+				pdfkit.from_file(html, pdf_path, verbose=False, options=(
+						{
+						'disable-javascript': True
+						, 'load-error-handling': 'skip'
+						}
+					)
+				)
+
 		except OSError:
 			# print('\t\t\tWKHTML is complaining')
 			pass
 		
-		self.attachment = pdf_path
-		return
+		if os.path.exists(pdf_path):
+			print('\t\tCreated PDF')
+			self.attachment = pdf_path
+		else:
+			print('\t\tFailed to create PDF')
 
 
 	def _get_attachment(self):
@@ -113,6 +131,7 @@ class Source:
 				else:
 					html = [match for match in directory if '.html' in match]
 					if html:
+						# print(f'found html: {html[0]}')
 						self.attachment = self._html_to_pdf(html[0])
 						return
 					else:

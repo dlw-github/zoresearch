@@ -28,13 +28,19 @@ def open(zotero_folder, collection_name='all'):
 	zotero_location = os.path.normpath(zotero_folder + '\\zotero.sqlite')
 	zotero_data_raw = zoresearch.sources_db._sql_query(zotero_location)
 	zotero_data_processed = zoresearch.sources_db._process_data(zotero_data_raw, zotero_folder)
-
+	
 	# Add/remove sources from local DB to match Zotero data
 	app_data_location = os.path.normpath(zotero_folder + '\\app_data.json')
 	app_data = zoresearch.sources_db._update_data(app_data_location, zotero_data_processed)
 
 	# Start GUI
 	zoresearch.gui._main(app_data, collection_name, app_data_location)
+
+
+def view_data(data):
+	for entry in data:
+		print(entry)
+		print()
 
 
 if __name__ == '__main__':
