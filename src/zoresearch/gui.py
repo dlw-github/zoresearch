@@ -20,8 +20,8 @@ class Note_gui:
 		self.root.title("Research Reader: " + collection_name.title() + " Collection") 
 		self.root.geometry("1200x450")
 		self.root.config(bg='#E5E5E5')
-		icon_path = self.get_icon()
-		self.root.iconbitmap(icon_path)
+		# icon_path = self.get_icon()
+		# self.root.iconbitmap(icon_path)
 		print('CURRENT DIR:' + os.getcwd())
 
 		# Initialize metadata
@@ -66,10 +66,10 @@ class Note_gui:
 		self.root.mainloop()
 
 
-	def get_icon(self):
-		with resources.path("zoresearch.icon", "zoresearch.ico") as f:
-			data_file_path = f
-		return data_file_path
+	# def get_icon(self):
+	# 	with resources.path("zoresearch.icon", "zoresearch.ico") as f:
+	# 		data_file_path = f
+	# 	return data_file_path
 
 
 	def _on_closing(self):
