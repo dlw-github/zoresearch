@@ -22,7 +22,6 @@ class Note_gui:
 		self.root.config(bg='#E5E5E5')
 		# icon_path = self.get_icon()
 		# self.root.iconbitmap(icon_path)
-		print('CURRENT DIR:' + os.getcwd())
 
 		# Initialize metadata
 		self.app_data_location = app_data_location
@@ -73,7 +72,6 @@ class Note_gui:
 
 
 	def _on_closing(self):
-		print('Clicked close')
 		self._save_source()
 		self._save_data()
 		self.root.destroy()
@@ -87,7 +85,7 @@ class Note_gui:
 		data = [vars(source) for source in self.app_data]
 		with open(self.app_data_location, 'w') as f:
 			json.dump(data, f, indent=4, default=str)
-		print("Saved project file")
+		print(f'ZORESEARCH DATA SAVED: {self.app_data_location}')
 
 
 	def _on_frame_configure(self):
@@ -148,7 +146,6 @@ class Note_gui:
 
 	def _select_collection(self):
 		self.collection_name = self.dropdown_selection.get().lower()
-		print(f'Change to {self.collection_name.title()} collection')
 
 		self.root.title("Research Reader: " + self.collection_name.title() + " Collection") 
 		self._save_source()
@@ -239,6 +236,7 @@ class Note_gui:
 		# Grid new source labels
 		self.selected_collection = zoresearch.sources_db._select_collection(self.app_data, self.collection_name, source_type)
 
+		print(f'DISPLAYING COLLECTION: {self.collection_name.upper()}')
 		for i, source in enumerate(self.selected_collection):
 			print(f'[{i+1}/{len(self.selected_collection)}] {source.title}')
 			# source._create_label(self.frame)

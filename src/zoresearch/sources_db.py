@@ -1,3 +1,4 @@
+# Import external modules
 from pathlib import Path
 import sqlite3
 import json
@@ -7,12 +8,13 @@ import pandas as pd
 import pdfkit
 import numpy as np
 
+# Import internal modules
 from zoresearch import source as create_source
 
 
 def _sql_query(zotero_location):
-	'''Creates a copy of the Zotero DB and queries for source metadata. Returns two DB 
-	which have to be merged
+	'''Queries local Zotero sqlite database for relevantsource information
+	Returns 2 datasets (sources and attachments) as zotero_raw_data
 	'''
 	zotero_copy = os.path.dirname(zotero_location) + '\\zotero_copy.sqlite'
 	shutil.copyfile(zotero_location, zotero_copy)
@@ -71,10 +73,8 @@ def _sql_query(zotero_location):
 	return ([df_1, df_2])
 
 
-# TASK: figure out a way to get rid of this
 def _lower(collections):
 	'''Lower case for all collections'''
-	# print(collections)
 	new_list = ['all']
 	for collection in collections:
 		new_list.append(collection.lower())
@@ -82,6 +82,7 @@ def _lower(collections):
 
 
 def _process_data(zotero_data_raw, zotero_folder):
+	"""Takes raw Zotero data and processes it to create single dataset of sources"""
 	df_1 = zotero_data_raw[0]
 	df_2 = zotero_data_raw[1]
 
@@ -136,7 +137,9 @@ def _process_data(zotero_data_raw, zotero_folder):
 
 
 def _update_data(app_json_location, zotero_data):
-	'''Adds and removes sources from local data set to match Zotero master'''
+	'''Adds and removes sources from local data set to match Zotero master
+	Returns list of Source objects for each source as app_data (see source.py for class details)
+	'''
 
 	# If no app data exists, just use Zotero data
 	if not os.path.exists(app_json_location):
@@ -146,7 +149,7 @@ def _update_data(app_json_location, zotero_data):
 		return app_data
 
 	# If app data exists, update sources to match Zotero data
-	print('1. UPDATING SOURCES IN DATASET')
+	print('UPDATING DATASET')
 	with open(app_json_location, 'r') as f:
 		app_data = json.load(f)
 
@@ -185,6 +188,9 @@ def _update_data(app_json_location, zotero_data):
 
 
 def _select_collection(app_data, collection_name, source_type):
+	"""Takes a given collection name and source type ('all', 'starred', or 'unread') 
+	Returns sources matching that collection & source type from app_data as selected_collection
+	"""
 	selected_collection = [source for source in app_data if collection_name in source.collections]
 	selected_collection = sorted(selected_collection, key=lambda source: source.date_added, reverse=True)
 

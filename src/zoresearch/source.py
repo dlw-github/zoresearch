@@ -1,3 +1,4 @@
+# Import external modules
 import fitz
 import sys
 import os
@@ -5,10 +6,16 @@ import pdfkit
 import fitz
 import tkinter as tk
 
+# Import internal modules
 import zoresearch.gui
 
 class Source:
+	"""
+	Class Source used for each source in dataset. 
+	Used to update annotations, notes, and create tkinter labels
+	"""
 	def __init__(self, metadata):
+		"""Creates Source object. Initializes with information passed from metadata dictionary"""
 
 		# Set initial values
 		self.title= ''
@@ -28,11 +35,15 @@ class Source:
 
 
 	def _describe(self):
+		"""Prints Source object metadata"""
 		print(f'SOURCE DESCRIPTION\nTitle: {self.title}\nKey: {self.key}\nURL: {self.url}\nAll notes: {self.all_notes}')
 
 
 	def _create_label(self, frame):
-		
+		"""Creates tkinter label based on Source data
+		Binds label to 2 functions: zoresearch.gui_hover & zoresearch.gui_leave
+		"""
+
 		if self.short_title is not None:
 			text = self.short_title
 
@@ -68,6 +79,7 @@ class Source:
 		
 
 	def _html_to_pdf(self, html):
+		"""Converts Source attachment from HTML to PDF"""
 		print(f'\t\tConverting HTML file to PDF: {html}')
 		html = self.attachment + html
 		# print(html)
@@ -75,8 +87,8 @@ class Source:
 		# print(pdf_path)
 		
 		try:
+			# Sometimes wkhtml works better if a path to its .exe is included
 			if os.path.exists(r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"):
-				# print('config option')
 				config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe")
 				pdfkit.from_file(html, pdf_path, verbose=False, configuration=config, options=(
 						{
@@ -86,7 +98,6 @@ class Source:
 					)
 				)
 			else:
-				# print('no config')
 				pdfkit.from_file(html, pdf_path, verbose=False, options=(
 						{
 						'disable-javascript': True
@@ -107,7 +118,7 @@ class Source:
 
 
 	def _get_attachment(self):
-		# print('\t\tInitial attachment value: {}'.format(self.attachment))
+		""""If a Source doesn't have a PDF attachment already, searches folder for PDF or HTML to convert to PDF """
 
 		# Return if PDF is already located or if no attachment exists
 		if self.attachment is None:
@@ -119,7 +130,6 @@ class Source:
 
 		# Otherwise, attachment points to directory. Convert HTML to PDF if needed
 		else:
-			# print('\t\t\tSearching for file in folder {}'.format(self.attachment))
 			try:
 				directory = os.listdir(self.attachment)
 				pdf = [match for match in directory if '.pdf' in match]
@@ -182,7 +192,6 @@ class Source:
 	    return annot_text_raw
 
 
-
 	def _create_annot(self, annot):
 	    '''Create annot entry in source_entry dict
 	       for sticky comments and highlights
@@ -216,28 +225,20 @@ class Source:
 	    if annot_entry not in self.annots:
 	        self.annots.append(annot_entry)
 	        self.all_notes += '\n\n' + annot_text 
-	        # print('\t\t\tAnnot added to dictionary')
-	    else:
-	        # print('\t\t\tAnnot already in dictionary')
-	        pass
-
 
 
 	def _get_annots(self):
+		"""Runs through PDF pages and extracts annotation"""
+		if self.attachment == None:
+			return
+		try:
+			file_path = os.path.normpath(self.attachment)
+			doc = fitz.open(file_path)
 
-	    if self.attachment == None:
-	        return
-	    try:
-	        file_path = os.path.normpath(self.attachment)
-	        doc = fitz.open(file_path)
-	        # print('\t\tExtracting annotations')
-
-	        for page in doc.pages():
-	            for annot in page.annots():
-	                self._create_annot(annot)
-	        return
+			for page in doc.pages():
+				for annot in page.annots():
+					self._create_annot(annot)
 	   
-	    except RuntimeError:
-	        # print('\t\tUnable to extract annotations')
-	        self.attachment = None 
-	        return
+		except RuntimeError:
+		    self.attachment = None 
+	        
