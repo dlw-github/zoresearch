@@ -2,7 +2,6 @@ LICENSE
 README.md
 pyproject.toml
 src/zoresearch/__init__.py
-src/zoresearch/get_annots.py
 src/zoresearch/gui.py
 src/zoresearch/main.py
 src/zoresearch/source.py
