@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: zoresearch
-Version: 0.0.4
+Version: 0.1.0
 Summary: Interactive research application built on top of Zotero citation manager
 Author-email: Daniel Waldroop <dlwaldroop@gmail.com>
 License: Copyright (c) 2018 The Python Packaging Authority
