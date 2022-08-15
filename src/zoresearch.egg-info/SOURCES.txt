@@ -6,7 +6,6 @@ src/zoresearch/gui.py
 src/zoresearch/main.py
 src/zoresearch/source.py
 src/zoresearch/sources_db.py
-src/zoresearch/test.py
 src/zoresearch.egg-info/PKG-INFO
 src/zoresearch.egg-info/SOURCES.txt
 src/zoresearch.egg-info/dependency_links.txt

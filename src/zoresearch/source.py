@@ -136,18 +136,16 @@ class Source:
 				if pdf:
 					# print('\t\tPDF found in source folder: {}'.format(pdf[0]))
 					self.attachment = self.attachment + pdf[0]
-					return
 
 				else:
 					html = [match for match in directory if '.html' in match]
 					if html:
 						# print(f'found html: {html[0]}')
-						self.attachment = self._html_to_pdf(html[0])
-						return
+						self._html_to_pdf(html[0])
+						
 					else:
 						# print('\t\tNo attachment found in folder; return none')
 						self.attachment = None
-						return
 			
 			except FileNotFoundError:
 				return

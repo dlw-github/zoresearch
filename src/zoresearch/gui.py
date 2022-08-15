@@ -14,6 +14,7 @@ import zoresearch.sources_db
 
 class Note_gui:
 	def __init__(self, app_data, collection_name, app_data_location):
+		'''Create and run zoResearch GUI'''
 		
 		# Create Tkinter window
 		self.root = tk.Tk()
@@ -72,16 +73,19 @@ class Note_gui:
 
 
 	def _on_closing(self):
+		'''Updates current source data and saves all source data before closing GUI'''
 		self._save_source()
 		self._save_data()
 		self.root.destroy()
 
 
 	def _save_source(self):
+		'''Updates selected sources Source object.all_notes to text from text widget'''
 		self.selected_source.all_notes = self.text_widget.get("1.0",tk.END)
 
 
 	def _save_data(self):
+		'''Saves all data to JSON'''
 		data = [vars(source) for source in self.app_data]
 		with open(self.app_data_location, 'w') as f:
 			json.dump(data, f, indent=4, default=str)
@@ -94,6 +98,7 @@ class Note_gui:
 
 
 	def _on_mousewheel(self, event):
+		'''Calculate scroll for sources pane'''
 		change = int(-1*(event.delta/120))
 		self.canvas.yview_scroll(change, "units")
 
@@ -106,6 +111,7 @@ class Note_gui:
 
 
 	def _open_link(self, dest):
+		'''Open URL link in browser'''
 		if dest == '':
 			return
 		else:
@@ -113,6 +119,7 @@ class Note_gui:
 
 
 	def _mark_unread(self, e):
+		'''Change Source object read status and Source object label to reflect change'''
 
 		# Change read status of selected source
 		self.selected_source.read = False
@@ -127,6 +134,7 @@ class Note_gui:
 
 
 	def _star_source(self, e):
+		'''Change Source object starred status and Source object label to reflect change'''
 		self.selected_source.starred = not self.selected_source.starred
 
 		# Starred source
@@ -143,8 +151,8 @@ class Note_gui:
 			self.selected_source.label.configure(text=text)
 
 
-
 	def _select_collection(self):
+		'''Change GUI to  selected  collection'''
 		self.collection_name = self.dropdown_selection.get().lower()
 
 		self.root.title("Research Reader: " + self.collection_name.title() + " Collection") 
@@ -160,18 +168,19 @@ class Note_gui:
 
 
 	def _select_source_type(self):
+		'''Change type of sources displayed (all, starred, unread)'''
 		source_type = self.source_type_dropdown_selection.get().lower()
 		print(source_type)
 		self._save_source()
 		self.text_widget.delete('1.0', tk.END)
 
-		
 		self._display_collection(source_type)
 		self.selected_source = self.selected_collection[0]
 		self._display_source(self.selected_source)
 
 
 	def _main_display(self):
+		'''Create display widgets'''
 
 		# Create widgets
 		self.canvas = tk.Canvas(self.root, background="#E5E5E5", width=220) 
@@ -226,8 +235,8 @@ class Note_gui:
 		self.text_scroll.grid(row=3, column=5, sticky='ns')
 
 
-
 	def _display_collection(self, source_type='all'):
+		'''Displays selected collection'''
 
 		# Ungrid current sources (if any)
 		for source in self.frame.grid_slaves():
@@ -246,6 +255,7 @@ class Note_gui:
 
 
 	def _display_source(self, source):
+		'''Displays selected source in GUI'''
 
 		# Save data from previously selected source
 		if self.text_widget.get("1.0",tk.END).strip():
@@ -294,6 +304,7 @@ class Note_gui:
 			self._display_PDF()
 
 	def _display_PDF(self):
+		'''Displays PDF thumbnails in GUI'''
 		source = self.selected_source
 
 		if source.attachment == None:
@@ -327,6 +338,8 @@ class Note_gui:
 
 
 	def _expand(self):
+		'''Opens pane for PDF viewing'''
+
 		self.show_pdf = not self.show_pdf
 
 		# To display PDF pane
@@ -352,7 +365,7 @@ class Note_gui:
 	
 
 def _hover(event):
-	'''Check widget foreground and change only if not green'''
+	'''Change source label appearance if hovered'''
 	current_fg = event.widget.cget("fg")
 	# print(f'Foreground color: {current_fg}')
 
@@ -362,6 +375,7 @@ def _hover(event):
 
 
 def _leave(event):
+	'''Revert source label appearance if un-hovered'''
 	current_fg = event.widget.cget("fg")
 	event.widget.config(background='#E5E5E5')
 	if current_fg != '#006400':
@@ -369,6 +383,5 @@ def _leave(event):
 
 
 def _main(app_data, collection_name, app_data_location):
-
-	# Create GUI object
+	'''Create GUI object for a particular collection'''
 	gui = Note_gui(app_data, collection_name, app_data_location)
